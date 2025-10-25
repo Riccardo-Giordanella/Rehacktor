@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router";
-import routes from "../router/routes";
+import routes from "../../router/routes";
 
 export default function Navbar() {
   const [slug, setSlug] = useState();
