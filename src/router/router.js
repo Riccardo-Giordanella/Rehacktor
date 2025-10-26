@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router";
+
 import routes from "./routes.js";
-import Layout from "../components/Layout.jsx";
 import Homepage from "../views/Homepage.jsx";
+import Layout from "../layouts/Layout.jsx";
 import {
   getAllGamesLoader,
   getAllGenres,
@@ -10,6 +11,9 @@ import {
 } from "./loaders.jsx";
 import SearchPage from "../views/SearchPage.jsx";
 import GenrePage from "../views/GenrePage.jsx";
+import AuthenticationLayout from "../layouts/AuthenticationLayout.jsx";
+import RegisterPage from "../views/auth/RegisterPage.jsx";
+import LoginPage from "../views/auth/LoginPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,20 @@ const router = createBrowserRouter([
         path: routes.genre,
         Component: GenrePage,
         loader: getFilteredByGenreGames,
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    Component: AuthenticationLayout,
+    children: [
+      {
+        path: routes.register,
+        Component: RegisterPage,
+      },
+      {
+        path: routes.login,
+        Component: LoginPage,
       },
     ],
   },

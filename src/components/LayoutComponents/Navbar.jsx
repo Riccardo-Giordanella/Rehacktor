@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import routes from "../../router/routes";
+import { UserContext } from "../../context/UserContext";
+import { FaArrowRightToBracket } from "react-icons/fa6";
 
 export default function Navbar() {
   const [slug, setSlug] = useState();
 
   const handleChange = (event) => {
     setSlug(event.target.value);
+  };
+
+  const navigate = useNavigate();
+
+  const { user, signOut } = useContext(UserContext);
+
+  const handleLogout = async () => {
+    await navigate("/");
+    signOut();
   };
 
   return (
@@ -34,28 +45,34 @@ export default function Navbar() {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+              {(user && (
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                />
+              )) || <FaArrowRightToBracket className="text-3xl" />}
             </div>
           </div>
           <ul
-            tabIndex="-1"
+            tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
+            {(!user && (
+              <>
+                <li>
+                  <Link to={routes.register}>Register</Link>
+                </li>
+                <li>
+                  <Link to={routes.login}>Login</Link>
+                </li>
+              </>
+            )) || (
+              <>
+                <li onClick={handleLogout}>
+                  <p className="text-red-600">Logout</p>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
