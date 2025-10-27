@@ -68,6 +68,9 @@ export default function Navbar() {
               </>
             )) || (
               <>
+                <li>
+                  <Link to={routes.profile}>Profile</Link>
+                </li>
                 <li onClick={handleLogout}>
                   <p className="text-red-600">Logout</p>
                 </li>
