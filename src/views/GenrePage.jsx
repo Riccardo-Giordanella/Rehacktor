@@ -6,13 +6,16 @@ export default function GenrePage() {
   const { slug } = useParams();
 
   return (
-    <>
-      <h1 className="text-center text-3xl my-10">Filtered by genre: {slug}</h1>
+    <main className="min-h-screen bg-base-100 text-neutral-content px-4 py-10">
+      <h1 className="text-center text-3xl font-bold text-primary mb-10 tracking-wide capitalize">
+        Filtered by genre: <span className="text-white">{slug}</span>
+      </h1>
+
       <GameList>
-        {games.map((game) => {
-          return <GameList.Card key={game.id} game={game} />;
-        })}
+        {games.map((game) => (
+          <GameList.Card key={game.id} game={game} />
+        ))}
       </GameList>
-    </>
+    </main>
   );
 }

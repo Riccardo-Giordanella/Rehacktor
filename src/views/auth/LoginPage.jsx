@@ -11,7 +11,6 @@ export default function LoginPage() {
   } = useForm();
 
   const navigate = useNavigate();
-
   const { login } = useContext(UserContext);
 
   const onSubmit = async (user_data) => {
@@ -24,36 +23,52 @@ export default function LoginPage() {
 
   return (
     <>
-      <h1 className="text-center text-4xl">Login</h1>
-      <main className="flex justify-center items-center">
-        <form className="p-10 bg-black w-1/2" onSubmit={handleSubmit(onSubmit)}>
-          <input
-            type="email"
-            placeholder="Email"
-            className="input input-lg mb-5 w-full"
-            {...register("email", { required: "This field is required" })}
-          />
-          {errors.email && (
-            <p role="alert" className="text-red-500 mb-6">
-              {errors.email.message}
-            </p>
-          )}
-          <input
-            type="password"
-            placeholder="Password"
-            className="input input-lg mb-5 w-full"
-            {...register("password", {
-              required: "This field is required",
-              minLength: 8,
-            })}
-          />
-          {errors.password && (
-            <p role="alert" className="text-red-500 mb-6">
-              {errors.password.message}
-            </p>
-          )}
+      <h1 className="text-center text-4xl font-bold text-primary mt-10 mb-6 tracking-wide">
+        Login
+      </h1>
 
-          <button className="btn bg-blue-600 p-5">Sign in</button>
+      <main className="flex justify-center items-center min-h-[60vh] px-4">
+        <form
+          className="bg-neutral text-neutral-content w-full max-w-md p-8 rounded-lg shadow-lg border border-base-300"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="form-control mb-4">
+            <input
+              type="email"
+              placeholder="Email"
+              className="input input-bordered input-md bg-base-200 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary w-full"
+              {...register("email", { required: "This field is required" })}
+            />
+            {errors.email && (
+              <p role="alert" className="text-red-500 text-sm mt-2">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="form-control mb-6">
+            <input
+              type="password"
+              placeholder="Password"
+              className="input input-bordered input-md bg-base-200 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary w-full"
+              {...register("password", {
+                required: "This field is required",
+                minLength: 8,
+              })}
+            />
+            {errors.password && (
+              <p role="alert" className="text-red-500 text-sm mt-2">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary w-full hover:scale-[1.02] transition-transform duration-200"
+          >
+            Sign in
+          </button>
         </form>
       </main>
     </>

@@ -7,72 +7,90 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 
 export default function Navbar() {
   const [slug, setSlug] = useState();
-
-  const handleChange = (event) => {
-    setSlug(event.target.value);
-  };
-
   const navigate = useNavigate();
-
   const { user, signOut } = useContext(UserContext);
 
+  const handleChange = (event) => setSlug(event.target.value);
   const handleLogout = async () => {
     await navigate("/");
     signOut();
   };
 
   return (
-    <div className="navbar bg-black shadow-sm">
+    <div className="navbar bg-neutral text-neutral-content shadow-md px-4 md:px-8">
       <div className="flex-1">
-        <Link className="btn btn-ghost text-xl font-electro" to={routes.home}>
+        <Link
+          className="btn btn-ghost text-xl font-electro tracking-wide hover:text-primary transition-all duration-200"
+          to={routes.home}
+        >
           Reactor
         </Link>
       </div>
-      <div className="flex gap-2">
+
+      <div className="flex items-center gap-2">
         <input
           type="text"
-          placeholder="Search"
-          className="input input-bordered w-24 md:w-auto"
+          placeholder="Search games..."
+          className="input input-bordered input-sm bg-base-200 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary w-28 md:w-48"
           onChange={handleChange}
         />
-        <Link className="btn btn-square" to={`/search/${slug}`}>
+        <Link
+          className="btn btn-sm btn-primary hover:scale-105 transition-transform"
+          to={`/search/${slug}`}
+        >
           <FaSearch />
         </Link>
+
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle avatar"
+            className="btn btn-ghost btn-circle hover:bg-base-200 transition"
           >
-            <div className="w-10 rounded-full">
-              {(user && (
+            <div className="w-10 rounded-full overflow-hidden">
+              {user ? (
                 <img
-                  alt="Tailwind CSS Navbar component"
+                  alt="User avatar"
                   src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  className="hover:scale-105 transition-transform"
                 />
-              )) || <FaArrowRightToBracket className="text-3xl" />}
+              ) : (
+                <FaArrowRightToBracket className="text-2xl text-primary hover:scale-110 transition-transform" />
+              )}
             </div>
           </div>
+
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-200 rounded-box w-52 text-sm"
           >
-            {(!user && (
+            {!user ? (
               <>
                 <li>
-                  <Link to={routes.register}>Register</Link>
+                  <Link className="hover:text-primary" to={routes.register}>
+                    Register
+                  </Link>
                 </li>
                 <li>
-                  <Link to={routes.login}>Login</Link>
+                  <Link className="hover:text-primary" to={routes.login}>
+                    Login
+                  </Link>
                 </li>
               </>
-            )) || (
+            ) : (
               <>
                 <li>
-                  <Link to={routes.profile}>Profile</Link>
+                  <Link className="hover:text-primary" to={routes.profile}>
+                    Profile
+                  </Link>
                 </li>
-                <li onClick={handleLogout}>
-                  <p className="text-red-600">Logout</p>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-red-500 hover:text-red-400"
+                  >
+                    Logout
+                  </button>
                 </li>
               </>
             )}
