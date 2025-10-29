@@ -6,11 +6,11 @@ export const UserContext = createContext();
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  
   const getUser = async () => {
     const {
       data: { session },
-      error,
     } = await supabase.auth.getSession();
     if (session) {
       const { user } = session;
@@ -20,6 +20,16 @@ export function UserContextProvider({ children }) {
         .select()
         .eq("id", user.id);
       setProfile(profiles[0]);
+      if (profiles[0]?.avatar_url) {
+        const { data } = await supabase.storage
+          .from("avatars")
+          .download(profiles[0].avatar_url);
+
+        if (data) {
+          const url = URL.createObjectURL(data);
+          setAvatarUrl(url);
+        }
+      }
     }
   };
 
@@ -44,7 +54,7 @@ export function UserContextProvider({ children }) {
   };
 
   const updateProfile = async (newProfile) => {
-    const { data, error } = await supabase
+    await supabase
       .from("profiles")
       .update(newProfile)
       .eq("id", user.id)
@@ -55,7 +65,16 @@ export function UserContextProvider({ children }) {
 
   return (
     <UserContext.Provider
-      value={{ user, profile, signOut, signUp, login, getUser, updateProfile }}
+      value={{
+        user,
+        profile,
+        avatarUrl,
+        signOut,
+        signUp,
+        login,
+        getUser,
+        updateProfile,
+      }}
     >
       {children}
     </UserContext.Provider>

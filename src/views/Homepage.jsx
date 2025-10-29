@@ -7,7 +7,7 @@ export default function Homepage() {
   return (
     <main className="min-h-screen bg-base-100 text-neutral-content px-4 py-10">
       <h1 className="font-electro text-4xl text-center font-bold text-primary mb-10 tracking-wide">
-        Reactor
+        Rehacktor
       </h1>
 
       <GameList>

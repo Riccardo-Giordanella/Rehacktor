@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 mt-10 border-t border-base-300">
       <aside>
         <p className="text-lg font-semibold leading-relaxed">
-          Reactor
+          Rehacktor
           <br />
           <span className="text-sm font-light text-gray-400">
             Games since 1990

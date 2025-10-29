@@ -9,7 +9,7 @@ export default function ProfileSettingsPage() {
   const [file, setFile] = useState();
   const [preview, setPreview] = useState();
 
-  const { updateProfie, profile, getUser } = useContext(UserContext);
+  const { updateProfile, profile, getUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     setFile(() => event.target.files[0]);
@@ -32,6 +32,7 @@ export default function ProfileSettingsPage() {
       .upsert({ id: profile.id, avatar_url: fileName })
       .select();
     await getUser();
+    navigate(routes.profile)
   };
 
   const {
@@ -43,7 +44,7 @@ export default function ProfileSettingsPage() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    updateProfie(data);
+    updateProfile(data);
     navigate(routes.profile);
   };
 
@@ -123,7 +124,7 @@ export default function ProfileSettingsPage() {
 
         <button
           type="submit"
-          className="btn btn-neutral w-full hover:scale-[1.02] transition-transform duration-200"
+          className="btn btn-primary w-full hover:scale-[1.02] transition-transform duration-200"
         >
           Upload
         </button>

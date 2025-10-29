@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../../database/supabase.js";
-
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 export default function BodySection({ game, profile_id }) {
   const [isFavourite, setIsFavourite] = useState(false);
@@ -14,16 +13,16 @@ export default function BodySection({ game, profile_id }) {
   };
 
   const get_reviews = async () => {
-    const { data: reviews, error } = await supabase
+    const { data: reviews } = await supabase
       .from("reviews")
-      .select("*")
+      .select("id, description, profile_id, profiles(first_name, last_name)")
       .eq("game_id", game.id);
 
     setGameReviews(reviews);
   };
 
   const add_review = async () => {
-    const { data, error } = await supabase
+    await supabase
       .from("reviews")
       .insert([
         { profile_id, game_id: game.id, game_name: game.name, description },
@@ -35,7 +34,7 @@ export default function BodySection({ game, profile_id }) {
   };
 
   const get_favourite = async () => {
-    let { data: favourites, error } = await supabase
+    let { data: favourites } = await supabase
       .from("favourites")
       .select("*")
       .eq("profile_id", profile_id)
@@ -50,7 +49,7 @@ export default function BodySection({ game, profile_id }) {
   }, [checkReview]);
 
   const add_game = async () => {
-    const { data, error } = await supabase
+    await supabase
       .from("favourites")
       .insert([{ profile_id, game_id: game.id, game_name: game.name }])
       .select();
@@ -58,7 +57,7 @@ export default function BodySection({ game, profile_id }) {
   };
 
   const remove_game = async () => {
-    const { error } = await supabase
+    await supabase
       .from("favourites")
       .delete()
       .eq("profile_id", profile_id)
@@ -67,44 +66,64 @@ export default function BodySection({ game, profile_id }) {
   };
 
   return (
-    <section className="grid grid-cols-6 mt-10 px-10">
-      <div className="col-span-5 flex flex-col items-center">
-        <p className="text-white text-xl mb-5">Reviews</p>
+    <section className="max-w-6xl mx-auto grid grid-cols-6 gap-6 mt-10 px-6">
+      {/* Recensioni */}
+      <div className="col-span-6 md:col-span-5 flex flex-col items-center">
+        <h3 className="text-2xl font-bold text-white mb-5">Reviews</h3>
+
         <textarea
-          className="textarea w-1/2"
-          placeholder="Type your review"
+          className="textarea textarea-bordered w-full md:w-4/5 mb-4 resize-none"
+          placeholder="Type your review..."
           onChange={handle_description}
           value={description}
         ></textarea>
-        <button className="btn bg-nav-gray w-1/2" onClick={add_review}>
+
+        <button
+          className="btn btn-primary w-full md:w-4/5 mb-6"
+          onClick={add_review}
+        >
           Send
         </button>
-        <div className="border border-nav-gray h-[200px] w-2/3 my-3 overflow-auto text-white">
-          {gameReviews &&
-            gameReviews.map((review) => {
-              return (
-                <p
-                  key={review.id}
-                  className="text-end my-3 mx-2 p-2 border border-white"
-                >
-                  {review.description}
+
+        <div className="w-full md:w-4/5 h-52 overflow-y-auto bg-base-200 rounded-lg shadow-inner p-4 space-y-3 scrollbar-thin scrollbar-thumb-base-content scrollbar-track-base-100">
+          {gameReviews?.length > 0 ? (
+            gameReviews.map((review) => (
+              <div
+                key={review.id}
+                className="bg-base-100 p-3 rounded shadow border border-base-300"
+              >
+                <p className="text-sm text-base-content mb-1">
+                  <span className="font-semibold text-primary">
+                    {review.profiles?.first_name} {review.profiles?.last_name}
+                  </span>{" "}
+                  :{" "}
+                  <span className="text-sm text-right text-base-content italic">
+                    {review.description}
+                  </span>
                 </p>
-              );
-            })}
+              </div>
+            ))
+          ) : (
+            <p className="text-base-content italic">No reviews yet.</p>
+          )}
         </div>
       </div>
-      <div>
-        {(isFavourite && (
-          <FaHeart
-            className="text-red-500 cursor-pointer text-3xl"
-            onClick={remove_game}
-          />
-        )) || (
-          <FaRegHeart
-            className="text-red-500 cursor-pointer text-3xl"
-            onClick={add_game}
-          />
-        )}
+
+      {/* Preferito */}
+      <div className="flex items-start justify-center pt-2">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-base-200 shadow-md hover:bg-base-300 transition-colors">
+          {isFavourite ? (
+            <FaHeart
+              className="text-red-500 cursor-pointer text-2xl hover:scale-110 transition-transform"
+              onClick={remove_game}
+            />
+          ) : (
+            <FaRegHeart
+              className="text-red-500 cursor-pointer text-2xl hover:scale-110 transition-transform"
+              onClick={add_game}
+            />
+          )}
+        </div>
       </div>
     </section>
   );

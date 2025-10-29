@@ -13,7 +13,7 @@ export default function ProfilePage() {
 
   const download_avatar = async () => {
     if (profile) {
-      const { data, error } = await supabase.storage
+      const { data } = await supabase.storage
         .from("avatars")
         .download(profile.avatar_url);
       const url = URL.createObjectURL(data);
@@ -23,7 +23,7 @@ export default function ProfilePage() {
 
   const get_favourites = async () => {
     if (profile) {
-      let { data: favourites, error } = await supabase
+      let { data: favourites } = await supabase
         .from("favourites")
         .select("*")
         .eq("profile_id", profile.id);
@@ -47,7 +47,7 @@ export default function ProfilePage() {
               className="w-[100px] h-[100px] rounded-full object-cover shadow-md hover:scale-105 transition-transform duration-300"
             />
             <h2 className="text-2xl font-bold mt-5 text-primary tracking-wide">
-              {profile.first_name}
+              {profile.username}
             </h2>
           </article>
 

@@ -8,7 +8,7 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 export default function Navbar() {
   const [slug, setSlug] = useState();
   const navigate = useNavigate();
-  const { user, signOut } = useContext(UserContext);
+  const { user, signOut, avatarUrl } = useContext(UserContext);
 
   const handleChange = (event) => setSlug(event.target.value);
   const handleLogout = async () => {
@@ -23,7 +23,7 @@ export default function Navbar() {
           className="btn btn-ghost text-xl font-electro tracking-wide hover:text-primary transition-all duration-200"
           to={routes.home}
         >
-          Reactor
+          Rehacktor
         </Link>
       </div>
 
@@ -51,8 +51,11 @@ export default function Navbar() {
               {user ? (
                 <img
                   alt="User avatar"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  className="hover:scale-105 transition-transform"
+                  src={
+                    avatarUrl ??
+                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  }
+                  className="hover:scale-105 transition-transform object-cover w-full h-full"
                 />
               ) : (
                 <FaArrowRightToBracket className="text-2xl text-primary hover:scale-110 transition-transform" />
