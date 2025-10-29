@@ -51,7 +51,7 @@
 ---
 
 ## 📁 Folder Structure
-
+```bash
 src/
 ├── assets/         # Static images and icons
 ├── components/     # Reusable components (Navbar, GameCard, BodySection, etc.)
@@ -60,7 +60,7 @@ src/
 ├── views/          # Main pages (Home, Profile, Settings, etc.)
 ├── router/         # Route definitions and navigation mapping
 └── main.jsx        # Application entry point
-
+```
 ---
 
 ## ⚙️ Local Setup
