@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import routes from "../../router/routes";
 import { UserContext } from "../../context/UserContext";
 import { FaArrowRightToBracket } from "react-icons/fa6";
+import Ryu from "../../assets/Ryu.png";
 
 export default function Navbar() {
   const [slug, setSlug] = useState();
@@ -51,10 +52,7 @@ export default function Navbar() {
               {user ? (
                 <img
                   alt="User avatar"
-                  src={
-                    avatarUrl ??
-                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  }
+                  src={avatarUrl ?? Ryu}
                   className="hover:scale-105 transition-transform object-cover w-full h-full"
                 />
               ) : (
